@@ -32,10 +32,10 @@
             <div class="flex items-center mx-2 lg:mr-8">
                 <div class="hidden lg:flex">
                     <img
-                        class="dark:hidden w-24"
+                        class="dark:hidden w-30"
                         src="assets/images/logo/logo-text.svg">
                     <img
-                        class="hidden dark:flex w-24"
+                        class="hidden dark:flex w-30"
                         src="assets/images/logo/logo-text-on-dark.svg">
                 </div>
                 <img
@@ -64,12 +64,6 @@
             <shortcuts></shortcuts>
             <messages></messages>
             <notifications></notifications>
-            <button
-                class="lg:hidden"
-                mat-icon-button
-                (click)="quickChat.toggle()">
-                <mat-icon [svgIcon]="'heroicons_outline:chat-alt-2'"></mat-icon>
-            </button>
             <user></user>
         </div>
     </div>
@@ -82,11 +76,8 @@
     </div>
 
     <!-- Footer -->
-    <div class="relative flex flex-0 items-center w-full h-14 sm:h-20 px-4 md:px-6 z-49 border-t bg-card dark:bg-transparent print:hidden">
-        <span class="font-medium text-secondary">Fuse &copy; {{currentYear}}</span>
+    <div class="relative flex flex-0 items-center w-full h-16 px-4 md:px-6 z-49 border-t bg-card dark:bg-transparent print:hidden">
+        <span class="font-medium text-secondary">Solvefinify &copy; {{currentYear}}</span>
     </div>
 
 </div>
-
-<!-- Quick chat -->
-<quick-chat #quickChat="quickChat"></quick-chat>
