@@ -1,0 +1,21 @@
+{
+    "dashboard": {
+        "title": "Tableau de bord",
+        "description": "Bienvenue sur votre tableau de bord. Vous pouvez voir les dernières activités de vos amis et les dernières nouvelles de votre communauté.",
+        "morning-greeting": "Bonjour, {{ name }}",
+        "afternoon-greeting": "Bon après-midi, {{ name }}",
+        "evening-greeting": "Bonsoir, {{ name }}"
+    },
+    "banks": {
+        "title": "banks"
+    },
+    "loans": {
+        "title": "loans",
+        "loaner_found": "Loaner found",
+        "loaner_not_found": "Loaner not found",
+        "error": "Error"
+    },
+    "snackbar": {
+        "close": "Fermer"
+    }
+}
