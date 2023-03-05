@@ -8,7 +8,7 @@
     },
     "newProjectRoot": "projects",
     "projects": {
-        "fuse": {
+        "solvefinity": {
             "projectType": "application",
             "schematics": {
                 "@schematics/angular:component": {
@@ -22,7 +22,7 @@
                 "build": {
                     "builder": "@angular-devkit/build-angular:browser",
                     "options": {
-                        "outputPath": "dist/fuse",
+                        "outputPath": "dist/solvefinity",
                         "index": "src/index.html",
                         "main": "src/main.ts",
                         "polyfills": "src/polyfills.ts",
@@ -39,6 +39,7 @@
                             "quill"
                         ],
                         "assets": [
+                            "src/favicon.ico",
                             "src/favicon-16x16.png",
                             "src/favicon-32x32.png",
                             "src/assets",
@@ -100,10 +101,10 @@
                     "builder": "@angular-devkit/build-angular:dev-server",
                     "configurations": {
                         "production": {
-                            "browserTarget": "fuse:build:production"
+                            "browserTarget": "solvefinity:build:production"
                         },
                         "development": {
-                            "browserTarget": "fuse:build:development"
+                            "browserTarget": "solvefinity:build:development"
                         }
                     },
                     "defaultConfiguration": "development"
@@ -111,7 +112,7 @@
                 "extract-i18n": {
                     "builder": "@angular-devkit/build-angular:extract-i18n",
                     "options": {
-                        "browserTarget": "fuse:build"
+                        "browserTarget": "solvefinity:build"
                     }
                 },
                 "test": {

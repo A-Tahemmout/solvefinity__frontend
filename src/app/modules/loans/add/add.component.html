@@ -1,0 +1,142 @@
+<div class="flex flex-col flex-auto md:w-160 md:min-w-160 max-h-160 -m-6">
+    <div class="m-4">
+        <!-- Loan Form -->
+        <ng-container>
+            <form [formGroup]="loanForm">
+                <!-- Amount & Interest Rate -->
+                <div class="flex flex-col md:flex-row">
+                    <!-- Amount -->
+                    <div class="flex flex-col w-full md:w-1/2 md:pr-4">
+                        <mat-form-field class="w-full">
+                            <mat-label>Amount</mat-label>
+                            <input
+                                class="text-right"
+                                matInput
+                                [formControlName]="'amount'"
+                                [placeholder]="'Amount'">
+                            <span matPrefix>$</span>
+                            <span matSuffix>.00</span>
+                            <mat-error *ngIf="loanForm.get('amount').hasError('required')">
+                                Amount is required
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <!-- Interest Rate -->
+                    <div class="flex flex-col w-full md:w-1/2 md:pl-4">
+                        <mat-form-field class="w-full">
+                            <mat-label>Interest Rate</mat-label>
+                            <input
+                                matInput
+                                formControlName="interestRate"
+                                [type]="'number'">
+                            <mat-error *ngIf="loanForm.get('interestRate').hasError('required')">
+                                Interest Rate is required
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <!-- Term & Installment -->
+                <div class="flex flex-col md:flex-row">
+                    <!-- Term -->
+                    <div class="flex flex-col w-full md:w-1/2 md:pr-4">
+                        <mat-form-field class="w-full">
+                            <mat-label>Term</mat-label>
+                            <mat-select
+                                [formControlName]="'term'"
+                                [placeholder]="'Term'">
+                                <mat-option *ngFor="let term of termOptions" [value]="term.value">
+                                    {{term.label}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="loanForm.get('term').hasError('required')">
+                                Term is required
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <!-- Installment -->
+                    <div class="flex flex-col w-full md:w-1/2 md:pl-4">
+                        <mat-form-field class="w-full">
+                            <mat-label>Installment</mat-label>
+                            <input
+                                matInput
+                                formControlName="installment"
+                                [type]="'number'">
+                            <mat-error *ngIf="loanForm.get('installment').hasError('required')">
+                                Installment is required
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <!-- Purpose & Grade -->
+                <div class="flex flex-col md:flex-row">
+                    <!-- Purpose -->
+                    <div class="flex flex-col w-full md:w-1/2 md:pr-4">
+                        <mat-form-field class="w-full">
+                            <mat-label>Purpose</mat-label>
+                            <mat-select
+                                [formControlName]="'purpose'"
+                                [placeholder]="'Purpose'">
+                                <mat-option *ngFor="let purpose of purposeOptions" [value]="purpose.value">
+                                    {{purpose.label}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="loanForm.get('purpose').hasError('required')">
+                                Purpose is required
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <!-- Grade -->
+                    <div class="flex flex-col w-full md:w-1/2 md:pl-4">
+                        <mat-form-field class="w-full">
+                            <mat-label>Grade</mat-label>
+                            <mat-select
+                                [formControlName]="'grade'"
+                                [placeholder]="'Grade'">
+                                <mat-option *ngFor="let grade of gradeOptions" [value]="grade.value">
+                                    {{grade.label}}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="loanForm.get('grade').hasError('required')">
+                                Grade is required
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <!-- Note -->
+                <div class="flex flex-col">
+                    <mat-form-field class="w-full">
+                        <mat-label>Note</mat-label>
+                        <textarea
+                            matInput
+                            formControlName="note"
+                            [type]="'text'">
+                        </textarea>
+                        <mat-error *ngIf="loanForm.get('note').hasError('required')">
+                            Note is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </form>
+        </ng-container>
+        <!-- Action Buttons -->
+        <ng-container>
+            <div class="flex items-center justify-end">
+                <!-- Add Button -->
+                <button
+                    class="ml-4"
+                    mat-flat-button
+                    [color]="'primary'"
+                    (click)="createLoan()">
+                    Add
+                </button>
+                <!-- Close Button -->
+                <button
+                    class="ml-4"
+                    mat-flat-button
+                    matDialogClose>
+                    Close
+                </button>
+            </div>
+        </ng-container>
+    </div>
+</div>

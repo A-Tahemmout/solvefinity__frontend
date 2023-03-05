@@ -1,0 +1,336 @@
+<div class="sm:absolute sm:inset-0 flex flex-col flex-auto min-w-0 sm:overflow-hidden bg-card dark:bg-transparent">
+    <!-- Header -->
+    <div class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between py-8 px-6 md:px-8 border-b">
+        <!-- Loader -->
+        <div
+            class="absolute inset-x-0 bottom-0"
+            *ngIf="isLoading">
+            <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
+        </div>
+        <!-- Title -->
+        <div class="text-4xl font-extrabold tracking-tight">Banks</div>
+        <!-- Actions -->
+        <div class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
+            <!-- Search -->
+            <mat-form-field class="fuse-mat-dense fuse-mat-no-subscript fuse-mat-rounded min-w-64">
+                <mat-icon
+                    class="icon-size-5"
+                    matPrefix
+                    [svgIcon]="'heroicons_solid:search'"></mat-icon>
+                <input
+                    matInput
+                    [formControl]="searchInputControl"
+                    [autocomplete]="'off'"
+                    [placeholder]="'Search for banks'">
+            </mat-form-field>
+
+            <!-- Add bank button -->
+            <button
+                class="ml-4"
+                mat-flat-button
+                [color]="'primary'"
+                (click)="createBank()">
+                <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
+                <span class="ml-2 mr-1">Add</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Main -->
+    <div class="flex flex-auto overflow-hidden">
+
+        <!-- Banks list -->
+        <div class="flex flex-col flex-auto sm:mb-18 overflow-hidden sm:overflow-y-auto">
+            <ng-container *ngIf="banks as banks">
+                <ng-container *ngIf="banks.length > 0; else noBanks">
+                    <div class="grid">
+                        <!-- Header -->
+                        <div
+                            class="banks-grid z-10 sticky top-0 grid gap-4 py-4 px-6 md:px-8 shadow text-md font-semibold text-secondary bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                            matSort
+                            matSortActive="name"
+                            matSortDirection="asc"
+                            matSortDisableClear
+                            (matSortChange)="sortBanks($event)">
+
+                            <div></div>
+
+                            <div [mat-sort-header]="'name'">Name</div>
+
+                            <div
+                                class="hidden sm:block"
+                                [mat-sort-header]="'description'">
+                                Description
+                            </div>
+
+                            <div class="hidden md:block">Phone</div>
+
+                            <div class="hidden md:block">Email</div>
+
+                            <div class="hidden lg:block">Slug</div>
+
+                            <div class="hidden lg:block">Users count</div>
+
+                            <div class="hidden sm:block">Details</div>
+                        </div>
+                        <!-- Rows -->
+                        <ng-container *ngIf="banks as banks">
+                            <ng-container *ngFor="let bank of banks; trackBy: trackByFn">
+                                <div class="banks-grid grid items-center gap-4 py-3 px-6 md:px-8 border-b">
+
+                                    <!-- Image -->
+                                    <div class="flex items-center">
+                                        <div class="relative flex flex-0 items-center justify-center w-12 h-12 mr-6 rounded overflow-hidden border">
+                                            <img
+                                                class="w-8"
+                                                *ngIf="bank.logo"
+                                                [alt]="'Bank logo image'"
+                                                [src]="assetsUrl + '/' + bank.logo">
+                                            <div
+                                                class="flex items-center justify-center w-full h-full text-xs font-semibold leading-none text-center uppercase"
+                                                *ngIf="!bank.logo">
+                                                NO LOGO
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Name -->
+                                    <div class="truncate">
+                                        {{bank.name}}
+                                    </div>
+
+                                    <!-- Description -->
+                                    <div class="hidden sm:block truncate">
+                                        {{bank.description}}
+                                    </div>
+
+                                    <!-- Phone -->
+                                    <div class="hidden md:block">
+                                        {{bank.phone ?? 'N/A'}}
+                                    </div>
+
+                                    <!-- Email -->
+                                    <div class="hidden md:block">
+                                        {{bank.email ?? 'N/A'}}
+                                    </div>
+
+                                    <!-- Slug -->
+                                    <div class="hidden lg:block">
+                                        {{bank.slug ?? 'N/A'}}
+                                    </div>
+
+                                    <!-- Users count -->
+                                    <div class="hidden lg:block">
+                                        {{bank.usersCount}}
+                                    </div>
+
+                                    <!-- Details button -->
+                                    <div>
+                                        <button
+                                            class="min-w-10 min-h-7 h-7 px-2 leading-6"
+                                            mat-stroked-button
+                                            (click)="toggleDetails(bank.id)">
+                                            <mat-icon
+                                                class="icon-size-5"
+                                                [svgIcon]="selectedBank?.id === bank.id ? 'heroicons_solid:chevron-up' : 'heroicons_solid:chevron-down'"></mat-icon>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="grid">
+                                    <ng-container *ngIf="selectedBank?.id === bank.id">
+                                        <ng-container *ngTemplateOutlet="rowDetailsTemplate; context: {$implicit: bank}"></ng-container>
+                                    </ng-container>
+                                </div>
+                            </ng-container>
+                        </ng-container>
+                    </div>
+
+                    <mat-paginator
+                        class="sm:absolute sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
+                        [ngClass]="{'pointer-events-none': isLoading}"
+                        (page)="handlePageEvent($event)"
+                        [length]="pagination.totalItems"
+                        [pageIndex]="pagination.currentPage"
+                        [pageSize]="pagination.pageSize"
+                        [pageSizeOptions]="[5, 10, 25, 100]"
+                        [showFirstLastButtons]="true"></mat-paginator>
+
+                </ng-container>
+            </ng-container>
+
+            <ng-template
+                #rowDetailsTemplate
+                let-bank>
+                <div class="shadow-lg overflow-hidden">
+                    <div class="flex border-b">
+                        <!-- Selected bank form -->
+                        <form
+                            class="flex flex-col w-full"
+                            [formGroup]="selectedBankForm">
+
+                            <div class="flex flex-col sm:flex-row p-8">
+
+                                <!-- Bank image and status -->
+                                <div class="flex flex-col items-center sm:items-start mb-8 sm:mb-0">
+                                    <div class="flex flex-col items-center">
+                                        <div class="flex items-center justify-center w-32 h-32 p-2 border rounded overflow-hidden">
+                                            <ng-container *ngIf="preview; else noImage">
+                                                <img class="w-full object-contain" [src]="preview">
+                                            </ng-container>
+                                            <ng-template #noImage>
+                                                <span class="text-lg font-semibold">NO IMAGE</span>
+                                            </ng-template>
+                                        </div>
+                                        <div class="flex items-center mt-5 whitespace-nowrap">
+                                            <!-- Change Image button -->
+                                            <input #logoInput hidden="true" type="file" accept="image/png, image/jpeg" onclick="this.value=null" (change)="selectLogo($event)"/>
+                                            <button
+                                                class="min-w-10 min-h-7 h-7 px-2 leading-6"
+                                                mat-stroked-button
+                                                (click)="logoInput.click()">
+                                                <mat-icon class="icon-size-5" svgIcon="heroicons_solid:camera"></mat-icon>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-col mt-8">
+                                        <span class="font-semibold mb-2">Bank status</span>
+                                        <mat-slide-toggle
+                                            [formControlName]="'active'"
+                                            [color]="'primary'">
+                                            {{selectedBankForm.get('active').value === true ? 'Active' : 'Disabled'}}
+                                        </mat-slide-toggle>
+                                    </div>
+                                </div>
+
+                                <div class="flex flex-auto flex-wrap">
+                                    <div class="flex flex-col w-full lg:w-2/4 sm:pl-8">
+                                        <div class="flex flex-col sm:flex-row">
+                                           <!-- Name -->
+                                            <mat-form-field class="w-full lg:w-3/4">
+                                                <mat-label>Name</mat-label>
+                                                <input
+                                                    matInput
+                                                    [formControlName]="'name'">
+                                            </mat-form-field>
+                                            <!-- Slug -->
+                                            <mat-form-field class="w-full lg:w-1/4 sm:pl-8">
+                                                <mat-label>Url</mat-label>
+                                                <input
+                                                    matInput
+                                                    [formControlName]="'slug'"
+                                                    [value]="bankNameToSlug()">
+                                            </mat-form-field>
+                                        </div>
+
+                                        <!-- Description -->
+                                        <mat-form-field class="w-full">
+                                            <mat-label>Description</mat-label>
+                                            <textarea
+                                                matInput
+                                                [formControlName]="'description'"
+                                                cdkTextareaAutosize
+                                                cdkAutosizeMinRows="2"
+                                                cdkAutosizeMaxRows="4"></textarea>
+                                        </mat-form-field>
+                                    </div>
+
+                                    <!-- Phone, Email -->
+                                    <div class="flex flex-col w-full lg:w-2/4 sm:pl-8">
+                                        <div class="flex flex-col sm:flex-row">
+                                            <!-- Email -->
+                                            <mat-form-field class="w-full">
+                                                <mat-label>Email</mat-label>
+                                                <input
+                                                    matInput
+                                                    [formControlName]="'email'"
+                                                    [placeholder]="'Email Address'">
+                                                <mat-icon
+                                                    class="icon-size-5"
+                                                    matPrefix
+                                                    [svgIcon]="'heroicons_solid:mail'"></mat-icon>
+                                            </mat-form-field>
+                                            <!-- Phone -->
+                                            <mat-form-field class="w-full sm:pl-8">
+                                                <mat-label>Phone</mat-label>
+                                                <input
+                                                    matInput
+                                                    [formControlName]="'phone'"
+                                                    [placeholder]="'Phone Number'">
+                                                <mat-icon
+                                                    class="icon-size-5"
+                                                    matPrefix
+                                                    [svgIcon]="'heroicons_solid:phone'"></mat-icon>
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div class="flex flex-col w-full">
+                                            <!-- Address -->
+                                            <mat-form-field class="w-full">
+                                                <mat-label>Address</mat-label>
+                                                <textarea
+                                                    matInput
+                                                    [formControlName]="'address'"
+                                                    cdkTextareaAutosize
+                                                    cdkAutosizeMinRows="2"
+                                                    cdkAutosizeMaxRows="4"></textarea>
+                                            </mat-form-field>
+                                            <!-- Website -->
+                                            <mat-form-field class="w-full">
+                                                <mat-label>Website</mat-label>
+                                                <input
+                                                    matInput
+                                                    [formControlName]="'website'">
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center justify-between w-full border-t px-8 py-4">
+                                <button
+                                    class="-ml-4"
+                                    mat-button
+                                    [color]="'warn'"
+                                    (click)="deleteSelectedBank()">
+                                    Delete
+                                </button>
+                                <div class="flex items-center">
+                                    <div
+                                        class="flex items-center mr-4"
+                                        *ngIf="flashMessage">
+                                        <ng-container *ngIf="flashMessage === 'success'">
+                                            <mat-icon
+                                                class="text-green-500"
+                                                [svgIcon]="'heroicons_outline:check'"></mat-icon>
+                                            <span class="ml-2">Bank updated</span>
+                                        </ng-container>
+                                        <ng-container *ngIf="flashMessage === 'error'">
+                                            <mat-icon
+                                                class="text-red-500"
+                                                [svgIcon]="'heroicons_outline:x'"></mat-icon>
+                                            <span class="ml-2">An error occurred, try again!</span>
+                                        </ng-container>
+                                    </div>
+                                    <button
+                                        mat-flat-button
+                                        [color]="'primary'"
+                                        (click)="updateSelectedBank()">
+                                        Update
+                                    </button>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </ng-template>
+
+            <ng-template #noBanks>
+                <div class="p-8 sm:p-16 border-t text-4xl font-semibold tracking-tight text-center">There are no banks!</div>
+            </ng-template>
+
+        </div>
+
+    </div>
+
+</div>
