@@ -1,0 +1,165 @@
+<div class="flex flex-col flex-auto min-w-0">
+
+    <!-- Header -->
+    <div class="bg-card">
+        <div class="flex flex-col w-full max-w-screen-xl mx-auto px-6 sm:px-8">
+            <div class="flex flex-col sm:flex-row flex-auto sm:items-center min-w-0 my-8 sm:my-12">
+                <!-- Avatar and name -->
+                <div class="flex flex-auto items-center min-w-0">
+                    <div class="flex-0 w-16 h-16 rounded-full overflow-hidden">
+                        <img
+                            class="w-full h-full object-cover"
+                            [src]="user.avatar">
+                    </div>
+                    <div class="flex flex-col min-w-0 ml-4">
+                        <ng-container *transloco="let t">
+                            <!-- Morning Greeting -->
+                            <!-- Check if local time is morning -->
+                            <ng-container *ngIf="today < 12">
+                                <div class="text-2xl md:text-5xl font-semibold tracking-tight leading-7 md:leading-snug truncate">{{ t('dashboard.morning-greeting', { name: user.firstName }) }}!</div>
+                            </ng-container>
+                            <!-- Check if local time is afternoon -->
+                            <ng-container *ngIf="today >= 12 && today < 18">
+                                <div class="text-2xl md:text-5xl font-semibold tracking-tight leading-7 md:leading-snug truncate">{{ t('dashboard.afternoon-greeting', { name: user.firstName }) }}!</div>
+                            </ng-container>
+                            <!-- Check if local time is evening -->
+                            <ng-container *ngIf="today >= 18">
+                                <div class="text-2xl md:text-5xl font-semibold tracking-tight leading-7 md:leading-snug truncate">{{ t('dashboard.evening-greeting', { name: user.firstName }) }}!</div>
+                            </ng-container>
+                        </ng-container>
+                        <div class="flex items-center">
+                            <mat-icon
+                                class="icon-size-5"
+                                [svgIcon]="'heroicons_solid:bell'"></mat-icon>
+                            <div class="ml-1.5 leading-6 truncate text-secondary">You have 2 new messages and 15 new tasks</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="flex items-center mt-6 sm:mt-0 sm:ml-2 space-x-3">
+                    <button
+                        mat-flat-button
+                        [color]="'primary'">
+                        <mat-icon
+                            class="icon-size-5"
+                            [svgIcon]="'heroicons_solid:cog'"></mat-icon>
+                        <span class="ml-2">Settings</span>
+                    </button>
+                </div>
+            </div>
+            <!-- Project selector -->
+            <div
+                class="relative flex self-start pt-2 pb-1 pl-5 pr-4 cursor-pointer overflow-hidden rounded-t-xl border border-b-0 bg-default"
+                matRipple>
+                <div class="flex items-center">
+                    <div class="overflow-hidden">
+                        <div class="font-medium leading-6 truncate">{{user.bank.name}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main -->
+    <div class="flex-auto border-t -mt-px pt-4 sm:pt-6">
+        <div class="w-full max-w-screen-xl mx-auto">
+            <!-- Tabs -->
+            <mat-tab-group
+                class="sm:px-2"
+                [animationDuration]="'0'">
+
+                <!-- Home -->
+                <mat-tab label="Home">
+                    <ng-template matTabContent>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 w-full min-w-0">
+                            <!-- Summary -->
+                            <div class="flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
+                                <div class="flex items-start justify-between">
+                                    <div class="text-lg font-medium tracking-tight leading-6 truncate">Banks</div>
+                                </div>
+                                <div class="flex flex-col items-center mt-2">
+                                    <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-blue-500">5</div>
+                                    <div class="text-lg font-medium text-blue-600 dark:text-blue-500">Active Banks</div>
+                                </div>
+                            </div>
+                            <!-- Overdue -->
+                            <div class="flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
+                                <div class="flex items-start justify-between">
+                                    <div class="text-lg font-medium tracking-tight leading-6 truncate">Users</div>
+                                </div>
+                                <div class="flex flex-col items-center mt-2">
+                                    <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-red-500">3</div>
+                                    <div class="text-lg font-medium text-red-600 dark:text-red-500">Active Users</div>
+                                </div>
+                            </div>
+                            <!-- Issues -->
+                            <div class="flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
+                                <div class="flex items-start justify-between">
+                                    <div class="text-lg font-medium tracking-tight leading-6 truncate">Loaners</div>
+                                </div>
+                                <div class="flex flex-col items-center mt-2">
+                                    <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-amber-500">7</div>
+                                    <div class="text-lg font-medium text-amber-600 dark:text-amber-500">Loaners</div>
+                                </div>
+                            </div>
+                            <!-- Features -->
+                            <div class="flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
+                                <div class="flex items-start justify-between">
+                                    <div class="text-lg font-medium tracking-tight leading-6 truncate">Loans</div>
+                                </div>
+                                <div class="flex flex-col items-center mt-2">
+                                    <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-green-500">11</div>
+                                    <div class="text-lg font-medium text-green-600 dark:text-green-500">Created Loans</div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-template>
+                </mat-tab>
+
+                <!-- Team -->
+                <mat-tab label="Team">
+                    <ng-template matTabContent>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full min-w-0">
+                            <ng-container *ngFor="let member of data.teamMembers">
+                                <div class="flex flex-col flex-auto items-center bg-card shadow rounded-2xl overflow-hidden">
+                                    <!-- Avatar & Info -->
+                                    <div class="flex flex-col flex-auto w-full p-8 text-center">
+                                        <div class="w-32 h-32 mx-auto rounded-full overflow-hidden">
+                                            <img
+                                                class="w-full h-full object-cover"
+                                                [src]="member.avatar">
+                                        </div>
+                                        <div class="mt-6 font-medium">{{member.name}}</div>
+                                        <div class="text-secondary">{{member.title}}</div>
+                                    </div>
+                                    <!-- Email & Phone -->
+                                    <div class="flex items-center w-full border-t divide-x">
+                                        <a
+                                            class="flex flex-auto items-center justify-center py-4 hover:bg-hover"
+                                            [href]="'mailto:' + member.email">
+                                            <mat-icon
+                                                class="icon-size-5 text-hint"
+                                                [svgIcon]="'heroicons_solid:mail'"></mat-icon>
+                                            <span class="ml-2">Email</span>
+                                        </a>
+                                        <a
+                                            class="flex flex-auto items-center justify-center py-4 hover:bg-hover"
+                                            [href]="'tel:' + member.phone">
+                                            <mat-icon
+                                                class="icon-size-5 text-hint"
+                                                [svgIcon]="'heroicons_solid:phone'"></mat-icon>
+                                            <span class="ml-2">Call</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </ng-template>
+                </mat-tab>
+
+            </mat-tab-group>
+        </div>
+    </div>
+
+</div>
