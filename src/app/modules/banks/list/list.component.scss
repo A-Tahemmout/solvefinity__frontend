@@ -1,0 +1,16 @@
+.banks-grid {
+    grid-template-columns: 48px minmax(150px, 1fr) 40px;
+
+    @screen sm {
+        grid-template-columns: 48px minmax(150px, 1fr) minmax(150px, 1fr) 72px;
+    }
+
+    @screen md {
+        grid-template-columns: 48px minmax(150px, 1fr) minmax(150px, 1fr) minmax(150px, 1fr) minmax(150px, 1fr) 72px;
+    }
+
+    @screen lg {
+        grid-template-columns: 48px minmax(150px, 1fr) minmax(150px, 1fr) minmax(150px, 1fr) minmax(150px, 1fr) minmax(150px, 1fr) 112px 72px;
+
+    }
+}
